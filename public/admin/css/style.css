@@ -1,0 +1,215 @@
+@charset "UTF-8";
+body {
+  margin-top: 0;
+}
+
+.container-fluid {
+  margin-top: 0;
+}
+
+.bg-dark {
+  background-color: #343a40 !important;
+}
+
+.bg-light {
+  background-color: #f8f9fa !important;
+}
+
+.p-3 {
+  padding: 1rem !important;
+}
+
+h1,
+h2 {
+  margin: 0;
+}
+
+li.nav-item a {
+  color: white;
+}
+
+.nav-link {
+  color: #333;
+}
+
+.nav-link:hover {
+  color: #007bff;
+}
+
+.header {
+  padding: 0px;
+}
+
+ul.nav.flex-column {
+  height: 100vh;
+}
+
+td.title {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: normal;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.btn-spacing {
+  margin-right: 5px;
+}
+
+.search-container {
+  flex: 0 0 50%;
+  max-width: 50%;
+}
+
+.form-inline {
+  display: flex;
+  justify-content: space-between;
+}
+
+h1 {
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 30px;
+}
+
+.btn-link {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  font-weight: 400;
+  text-align: center;
+  text-decoration: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+}
+
+.btn-link:hover {
+  text-decoration: none;
+  background-color: #e2e6ea;
+  border-color: #dae0e5;
+}
+
+.btn-spacing:last-child {
+  margin-right: 0;
+}
+
+.btn-selected {
+  background-color: red;
+  color: white;
+  border-color: red; /* Thay đổi màu viền nếu có */
+}
+
+a {
+  display: block;
+}
+
+.custom-file-upload {
+  position: relative;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f8f9fa;
+  overflow: hidden;
+}
+
+.custom-file-upload img {
+  max-width: 100%;
+  max-height: 200px;
+  -o-object-fit: cover;
+     object-fit: cover;
+  border-radius: 0.25rem;
+}
+
+.custom-file-upload input[type=file] {
+  display: none;
+}
+
+.custom-file-upload label {
+  cursor: pointer;
+}
+
+.custom-file-upload .delete-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(255, 255, 255, 0.7);
+  border: none;
+  border-radius: 50%;
+  padding: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  color: #dc3545;
+  display: none; /* Ẩn nút xóa ảnh mặc định */
+}
+
+.custom-file-upload .delete-btn:hover {
+  background: rgb(255, 255, 255);
+}
+
+.maxw {
+  max-width: 200px;
+}
+
+.alert {
+  position: fixed;
+  top: 80px;
+  right: 10px;
+  z-index: 1050;
+  width: 300px;
+}
+
+.alert .close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 0.75rem 1.25rem;
+  color: inherit;
+}
+
+.alert-success {
+  background-color: #d4edda;
+  border-color: #c3e6cb;
+  color: #155724;
+}
+
+.alert-danger {
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+  color: #721c24;
+}
+
+.trash-link {
+  text-decoration: none;
+  color: #007bff; /* Màu sắc của liên kết */
+}
+
+.trash-link:hover {
+  color: #0056b3; /* Màu sắc khi di chuột qua */
+}
+
+.container-image-preview {
+  max-width: 200px;
+  position: relative;
+  border: 2px solid #ced4da;
+  border-radius: 3px;
+}
+
+.image-preview {
+  width: 100%;
+}
+
+button.delete-image-preview {
+  border-radius: 3px;
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  padding: 0 7px;
+  background-color: red;
+  outline: none;
+  border: none;
+  color: white;
+}/*# sourceMappingURL=style.css.map */

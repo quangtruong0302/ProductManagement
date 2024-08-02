@@ -1,0 +1,10 @@
+.card-title {
+  min-height: 40.08px;
+  font-size: 17px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: normal;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}/*# sourceMappingURL=style.css.map */

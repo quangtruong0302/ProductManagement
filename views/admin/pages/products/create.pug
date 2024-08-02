@@ -1,0 +1,53 @@
+extends ../../layouts/default.pug 
+include ../../mixins/alert.pug
+block main 
+    -if(messages.success)
+        +alert-success(messages.success)
+    -if(messages.error)
+        +alert-error(messages.error)
+    
+    .container.mt-5
+      h1 Thêm Mới Sản Phẩm
+      form(action="/admin/products/create" method="POST" enctype="multipart/form-data")
+        .form-group
+          label(for="title") Tên Sản Phẩm
+          input#productName.form-control(type="text" name="title" placeholder="Nhập tên sản phẩm")
+        
+        .form-group
+          label(for="description") Mô Tả
+          textarea#productDescription.form-control.textarea-mce(name="description" rows="3" placeholder="Nhập mô tả sản phẩm")
+        .form-row.mb-3
+          .col
+            .form-group
+              label(for="price") Giá
+              input#productPrice.form-control(type="number" step="0.01" name="price" placeholder="Nhập giá sản phẩm")
+          .col
+            .form-group
+              label(for="stock") Số Lượng
+              input#productQuantity.form-control(type="number" name="stock" placeholder="Nhập số lượng sản phẩm")
+          .col
+            .form-group
+              label(for="discountPercentage") Phần Trăm Giảm Giá
+              input#discountPercentage.form-control(type="number" step="0.01" name="discountPercentage" placeholder="Nhập phần trăm giảm giá")
+          .col
+            .form-group
+              label(for="position") Vị trí
+              input#productQuantity.form-control(type="number" name="position" placeholder="Tụ động tăng")
+        .form-group.upload-image(upload-image)
+          label(for="thumbnail") Hình ảnh sản phẩm
+          input#productImage.form-control-file.input-image(type="file" aria-label="File input" name="thumbnail" accept="image/*")
+          .container-image-preview.d-none.mt-3
+            img.image-preview(src="", alt="")
+            button.delete-image-preview.d-none &times;
+               
+        label Trạng thái sản phẩm
+        .d-flex
+          .form-group.mr-5
+            .form-check
+                input#statusActive.form-check-input(type="radio" name="status" value="active" checked=true)
+                label.form-check-label(for="statusActive")  Hoạt động
+          .form-group.mr-5
+            .form-check
+                input#statusInactive.form-check-input(type="radio" name="status" value="inactive")
+                label.form-check-label(for="statusInactive")  Không hoạt động
+        button.btn.btn-primary(type="submit") Thêm Sản Phẩm
