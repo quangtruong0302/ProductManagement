@@ -1,7 +1,7 @@
 extends ../../layouts/default.pug
 include ../../../client/mixins/pagination.pug
 include ../../mixins/search.pug
-include ../../mixins/fillter.pug
+include ../../mixins/changeMulti.pug
 include ../../mixins/alert.pug
 
 
@@ -19,16 +19,16 @@ block main
             +search()
             
             // Phần chọn lựa và nút áp dụng
-            +fillter-2()
+            +changeMulti-trash()
             .create-contrainer
                 a.btn.btn-primary(href="/admin/products/create")
                     i.bi.bi-plus.mr-2
                     | Thêm mới sản phẩm
     .mb-3
         .d-flex.justify-content-flex-start
-            a.btn.btn-primary.mr-2(href='products?status=all') Tất cả 
-            a.btn.btn-success.mr-2(href='products?status=active') Hoạt động
-            a.btn.btn-secondary(href='products?status=inactive') Không hoạt động
+            a.btn.btn-primary.mr-2(href='trash?status=all') Tất cả 
+            a.btn.btn-success.mr-2(href='trash?status=active') Hoạt động
+            a.btn.btn-secondary(href='trash?status=inactive') Không hoạt động
         
     table.table.table-striped(checkbox-multi)
         thead
@@ -42,6 +42,7 @@ block main
                 th Số Lượng
                 th Vị trí
                 th Trạng thái
+                th Nguời xoá
                 th Hành động
         tbody
             each product, index in products
@@ -61,6 +62,7 @@ block main
                     else 
                         td 
                             button.btn.btn-secondary.btn-sm(type="button") Không hoạt động
+                    td Người xoá: Admin
                     td  
                         button.btn.btn-success.btn-sm.mr-2(type="button" data-id=product._id button-restore) Khôi phục
                         button.btn.btn-danger.btn-sm(type="button" data-id=product._id permanent-Delete) Xóa vĩnh viễn

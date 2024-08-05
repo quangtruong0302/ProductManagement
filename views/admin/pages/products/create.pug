@@ -1,5 +1,6 @@
 extends ../../layouts/default.pug 
 include ../../mixins/alert.pug
+include ../../mixins/select-tree.pug
 block main 
     -if(messages.success)
         +alert-success(messages.success)
@@ -16,6 +17,13 @@ block main
         .form-group
           label(for="description") Mô Tả
           textarea#productDescription.form-control.textarea-mce(name="description" rows="3" placeholder="Nhập mô tả sản phẩm")
+        .form-group 
+            label(for="parent") Danh mục cha
+              //- select(name="parent" id="parent inputGroupSelect02" class="custom-select")
+            select.form-control.mr-2(id="action-select" name="parent")
+                option(selected="selected" value="") Trống
+                if (categories.length > 0) 
+                    +select-tree(categories)
         .form-row.mb-3
           .col
             .form-group
@@ -38,7 +46,7 @@ block main
           input#productImage.form-control-file.input-image(type="file" aria-label="File input" name="thumbnail" accept="image/*")
           .container-image-preview.d-none.mt-3
             img.image-preview(src="", alt="")
-            button.delete-image-preview.d-none &times;
+            span.delete-image-preview.d-none &times;
                
         label Trạng thái sản phẩm
         .d-flex

@@ -1,4 +1,5 @@
 const Product = require("../../models/products.model");
+const Categories = require("../../models/categories.model");
 const pagination = require("../../helpers/pagination");
 const search = require("../../helpers/search");
 module.exports.products = async (req, res) => {
@@ -38,9 +39,29 @@ module.exports.products = async (req, res) => {
   });
 };
 
-module.exports.create = (req, res) => {
+module.exports.create = async (req, res) => {
+  const find = {
+    deleted: false,
+  };
+  const createTree = (arr, parentID = "") => {
+    const tree = [];
+    arr.forEach((item) => {
+      if (item.parent === parentID) {
+        const newItem = item;
+        const children = createTree(arr, item.id);
+        if (children.length > 0) {
+          newItem.children = children;
+        }
+        tree.push(newItem);
+      }
+    });
+    return tree;
+  };
+  const categories = await Categories.find(find);
+  const newCategories = createTree(categories);
   res.render("admin/pages/products/create.pug", {
     pageTitle: "Thêm sảm phẩm",
+    categories: newCategories,
   });
 };
 
@@ -93,6 +114,11 @@ module.exports.trash = async (req, res) => {
   const find = {
     deleted: true,
   };
+  if (req.query.status == "active") {
+    find.status = "active";
+  } else if (req.query.status == "inactive") {
+    find.status = "inactive";
+  }
   const countProduct = await Product.countDocuments(find);
   const objPagination = pagination(
     {
@@ -134,6 +160,67 @@ module.exports.formPermanentDelete = async (req, res) => {
     res.redirect("back");
   } catch (error) {
     req.flash("error", "Đã xảy ra lỗi, vui lòng thử lại");
+    res.redirect("back");
+  }
+};
+
+module.exports.changeMulti = async (req, res) => {
+  const ids = req.body["value-submit"].split(", ");
+  const typeChange = req.body["type-change"];
+  try {
+    switch (typeChange) {
+      case "delete_all":
+        await Product.updateMany({ _id: { $in: ids } }, { deleted: true });
+        req.flash("success", "Các sản phẩm đã được chuyển vào thùng rác");
+        break;
+      case "active_all":
+        await Product.updateMany({ _id: { $in: ids } }, { status: "active" });
+        req.flash("success", "Cập nhật trạng thái thành công");
+        break;
+      case "inactive_all":
+        await Product.updateMany({ _id: { $in: ids } }, { status: "inactive" });
+        req.flash("success", "Cập nhật trạng thái thành công");
+        break;
+      case "restore_all":
+        await Product.updateMany({ _id: { $in: ids } }, { deleted: false });
+        req.flash("success", "Các sản phẩm đã được khôi phục");
+        break;
+      case "permanentDelete_all":
+        await Product.deleteMany({ _id: { $in: ids } });
+        req.flash("success", "Các sản phẩm đã được xoá vĩnh viễn");
+        break;
+      default:
+        break;
+    }
+    res.redirect("back");
+  } catch (error) {
+    req.flash("error", "Đã xảy ra lỗi, vui lòng thử lại");
+    req.redirect("back");
+  }
+};
+
+module.exports.edit = async (req, res) => {
+  try {
+    const product = await Product.findOne({ _id: req.params.id });
+    res.render("admin/pages/products/edit.pug", {
+      pageTitle: "Chỉnh sửa sản phẩm",
+      product: product,
+    });
+  } catch (error) {}
+};
+
+module.exports.editPatch = async (req, res) => {
+  req.body.position = parseInt(req.body.position);
+  req.body.price = parseInt(req.body.price);
+  req.body.stock = parseInt(req.body.stock);
+  req.body.discountPercentage = parseInt(req.body.discountPercentage);
+
+  try {
+    await Product.updateOne({ _id: req.params.id }, { ...req.body });
+    req.flash("success", "Cập nhật thông tin sản phẩm thành công");
+    res.redirect("back");
+  } catch (error) {
+    req.flash("error", "Đã xảy ra lỗi vui lòng thử lại");
     res.redirect("back");
   }
 };

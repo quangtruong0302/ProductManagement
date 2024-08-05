@@ -1,0 +1,21 @@
+mixin changeMulti()
+    .select-container
+        form(action="/admin/products/change-multi?_method=PATCH" method="POST" form-change-multi) 
+            select.form-control.mr-2(id="action-select" name="type-change")
+                option(disabled="disabled" selected="selected") Chọn hành động
+                option(value="delete_all") Xóa tất cả
+                option(value="active_all") Hoạt động
+                option(value="inactive_all") Không hoạt động
+            button.btn.btn-primary(type="submit", id="apply-button") Áp dụng
+            input(type="text" name="value-submit" class="d-none")
+
+mixin changeMulti-trash()
+    
+    .select-container
+        form(action="/admin/products/change-multi?_method=PATCH" method="POST" form-change-multi) 
+            select.form-control.mr-2(id="action-select" name="type-change")
+                option(disabled="disabled" selected="selected") Chọn hành động
+                option(value="restore_all") Khôi phục tất cả
+                option(value="permanentDelete_all") Xoá tất cả
+            button.btn.btn-primary(type="submit", id="apply-button") Áp dụng
+            input(type="text" name="value-submit" class="d-none")

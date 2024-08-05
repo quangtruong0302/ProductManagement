@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const controller = require("../../controllers/admin/categories.controller.js");
 const validate = require("../../validates/products.validate.js");
 
 const cloudinary = require("cloudinary").v2;
@@ -13,8 +14,7 @@ cloudinary.config({
   api_secret: "CiqV-hp41tAtFdeAKSkDY7ujUmc",
 });
 
-const controller = require("../../controllers/admin/products.controller.js");
-router.get("/", controller.products);
+router.get("/", controller.categories);
 router.get("/create", controller.create);
 router.post(
   "/create",
@@ -23,21 +23,7 @@ router.post(
   uploadImage,
   controller.createPost
 );
-
-router.patch("/change-status/:status/:id", controller.changeStatus);
-router.delete("/delete/:id", controller.delete);
-router.get("/trash", controller.trash);
-router.patch("/change-multi", controller.changeMulti);
-router.patch("/restore/:id", controller.restore);
-router.delete("/formPermanentDelete/:id", controller.formPermanentDelete);
-
 router.get("/edit/:id", controller.edit);
-router.patch(
-  "/edit/:id",
-  upload.single("thumbnail"),
-  validate.createPost,
-  uploadImage,
-  controller.editPatch
-);
 
+router.delete("/delete/:id", controller.delete);
 module.exports = router;

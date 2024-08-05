@@ -202,7 +202,8 @@ a {
   width: 100%;
 }
 
-button.delete-image-preview {
+span.delete-image-preview {
+  cursor: default;
   border-radius: 3px;
   position: absolute;
   top: -2px;
@@ -212,4 +213,8 @@ button.delete-image-preview {
   outline: none;
   border: none;
   color: white;
+}
+
+td.desc {
+  max-width: 200px;
 }/*# sourceMappingURL=style.css.map */

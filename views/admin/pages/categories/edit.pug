@@ -1,0 +1,45 @@
+extends ../../layouts/default.pug 
+include ../../mixins/alert.pug
+include ../../mixins/select-tree.pug
+
+block main 
+    -if(messages.success)
+        +alert-success(messages.success)
+    -if(messages.error)
+        +alert-error(messages.error)
+    
+    .container.mt-5
+      h1 Thêm Mới Danh Mục
+      form(action="/admin/categories/create" method="POST" enctype="multipart/form-data")
+        .form-group
+          label(for="title") Tên danh mục
+          input#productName.form-control(type="text" name="title" placeholder="Nhập tên sản phẩm" value=category.title)
+        .form-group 
+            label(for="parent") Danh mục 
+              //- select(name="parent" id="parent inputGroupSelect02" class="custom-select")
+            select.form-control.mr-2(id="action-select" name="parent")
+                option(selected="selected" value="empty") Trống
+                if (categories.length > 0) 
+                    +select-tree(categories, 1, category.parent)
+        .form-group
+          label(for="description") Mô Tả
+          textarea#productDescription.form-control.textarea-mce(name="description" rows="3" placeholder="Nhập mô tả sản phẩm") !{category.description} 
+        
+        .form-group.upload-image(upload-image)
+          label(for="thumbnail") Hình ảnh danh mục
+          input#productImage.form-control-file.input-image(type="file" aria-label="File input" name="thumbnail" accept="image/*")
+          .container-image-preview.mt-3
+            img.image-preview(src=category.thumbnail, alt="")
+            span.delete-image-preview &times;
+               
+        label Trạng thái danh mục
+        .d-flex
+          .form-group.mr-5
+            .form-check
+                input#statusActive.form-check-input(type="radio" name="status" value="active" checked=category.status=="active" ? true : false)
+                label.form-check-label(for="statusActive")  Hoạt động
+          .form-group.mr-5
+            .form-check
+                input#statusInactive.form-check-input(type="radio" name="status" value="inactive" checked=category.status=="inactive" ? true : false)
+                label.form-check-label(for="statusInactive")  Không hoạt động
+        button.btn.btn-primary(type="submit") Thêm Danh Mục
