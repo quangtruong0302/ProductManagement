@@ -1,5 +1,6 @@
 extends ../../layouts/default.pug 
 include ../../mixins/alert.pug
+include ../../mixins/select-tree.pug
 block main 
     -if(messages.success)
         +alert-success(messages.success)
@@ -33,6 +34,13 @@ block main
             .form-group
               label(for="position") Vị trí
               input#productQuantity.form-control(type="number" name="position" placeholder="Tụ động tăng" value=product.position)
+        .form-group 
+          label(for="parent") Danh mục cha
+            //- select(name="parent" id="parent inputGroupSelect02" class="custom-select")
+          select.form-control.mr-2(id="action-select" name="category")
+              option(selected="selected" value="empty") Trống
+              if (categories.length > 0) 
+                  +select-tree(categories, 1, product.category)
         .form-group.upload-image(upload-image)
           label(for="thumbnail") Hình ảnh sản phẩm
           input#productImage.form-control-file.input-image(type="file" aria-label="File input" name="thumbnail" accept="image/*")

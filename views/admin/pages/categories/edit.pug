@@ -10,8 +10,8 @@ block main
     
     .container.mt-5
       h1 Thêm Mới Danh Mục
-      form(action="/admin/categories/create" method="POST" enctype="multipart/form-data")
-        .form-group
+      form(action=`/admin/categories/edit/${category._id}?_method=PATCH` method="POST" enctype="multipart/form-data")
+        .form-grou
           label(for="title") Tên danh mục
           input#productName.form-control(type="text" name="title" placeholder="Nhập tên sản phẩm" value=category.title)
         .form-group 
@@ -42,4 +42,4 @@ block main
             .form-check
                 input#statusInactive.form-check-input(type="radio" name="status" value="inactive" checked=category.status=="inactive" ? true : false)
                 label.form-check-label(for="statusInactive")  Không hoạt động
-        button.btn.btn-primary(type="submit") Thêm Danh Mục
+        button.btn.btn-primary(type="submit") Cập nhật

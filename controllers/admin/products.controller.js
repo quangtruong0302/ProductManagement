@@ -27,10 +27,29 @@ module.exports.products = async (req, res) => {
   if (objSearch.regex) {
     find.title = objSearch.regex;
   }
+
   const products = await Product.find(find)
     .sort({ position: "desc" })
     .limit(objPagination.limitItems)
     .skip(objPagination.skip);
+
+  for (const product of products) {
+    let categoryName = "empty";
+    if (product.category != "empty") {
+      const category = await Categories.findOne({
+        _id: product.category,
+        deleted: false,
+      });
+      if (category) {
+        categoryName = category.title;
+      } else {
+        categoryName = "empty";
+      }
+      product.categoryName = categoryName;
+    } else {
+      product.categoryName = categoryName;
+    }
+  }
   res.render("admin/pages/products/products.pug", {
     pageTitle: "Danh sách sản phẩm",
     products: products,
@@ -43,7 +62,7 @@ module.exports.create = async (req, res) => {
   const find = {
     deleted: false,
   };
-  const createTree = (arr, parentID = "") => {
+  const createTree = (arr, parentID = "empty") => {
     const tree = [];
     arr.forEach((item) => {
       if (item.parent === parentID) {
@@ -79,7 +98,6 @@ module.exports.createPost = async (req, res) => {
     }
     const product = new Product(req.body);
     await product.save();
-    console.log(req.body);
     req.flash("success", "Thêm sản phẩm thành công");
     res.redirect("/admin/products");
   } catch (error) {}
@@ -201,10 +219,30 @@ module.exports.changeMulti = async (req, res) => {
 
 module.exports.edit = async (req, res) => {
   try {
+    const find = {
+      deleted: false,
+    };
+    const createTree = (arr, parentID = "empty") => {
+      const tree = [];
+      arr.forEach((item) => {
+        if (item.parent === parentID) {
+          const newItem = item;
+          const children = createTree(arr, item.id);
+          if (children.length > 0) {
+            newItem.children = children;
+          }
+          tree.push(newItem);
+        }
+      });
+      return tree;
+    };
+    const categories = await Categories.find(find);
+    const newCategories = createTree(categories);
     const product = await Product.findOne({ _id: req.params.id });
     res.render("admin/pages/products/edit.pug", {
       pageTitle: "Chỉnh sửa sản phẩm",
       product: product,
+      categories: newCategories,
     });
   } catch (error) {}
 };

@@ -1,0 +1,66 @@
+extends ../../layouts/default.pug
+include ../../../client/mixins/pagination.pug
+include ../../mixins/search.pug
+include ../../mixins/changeMulti.pug
+include ../../mixins/alert.pug
+
+
+block main
+    -if(messages.success)
+        +alert-success(messages.success)
+    -if(messages.error)
+        +alert-error(messages.error)
+    
+        
+    h1.mb-5 Danh Sách Sản Phẩm
+    .row.mb-4
+        .col-md-12
+          .form-inline
+            // Phần tìm kiếm
+            +search()
+            
+            // Phần chọn lựa và nút áp dụng
+            +changeMulti()
+            .create-contrainer
+                a.btn.btn-primary(href="/admin/role/create")
+                    i.bi.bi-plus.mr-2
+                    | Thêm mới nhóm quyền
+    .mb-3
+        .d-flex.justify-content-between.mt-4
+            .d-flex.justify-content-flex-start
+                a.btn.btn-primary.mr-2(href='products?status=all') Tất cả 
+                a.btn.btn-success.mr-2(href='products?status=active') Hoạt động
+                a.btn.btn-secondary(href='products?status=inactive') Không hoạt động
+            .container-trash
+                a.trash-link(href='/admin/products/trash')
+                    i.fas.fa-trash-alt.mr-2
+                    | Thùng rác(#{countTrash})
+            
+
+
+    table.table.table-striped(checkbox-multi)
+        thead
+            tr
+                th 
+                    input(type="checkbox", name="check-all")
+                th STT
+                th Tên nhóm quyền
+                th Mô tả
+                th Hành động
+        tbody
+            each role, index in roles
+                tr
+                    td
+                        input(type="checkbox" name="id")
+                    td #{index + 1}
+                
+                    td.title #{role.title}
+                    td !{role.description}
+                    td  
+                        button.btn.btn-info.btn-sm.mr-2.mb-2(type="button") Chi tiết
+                        a.btn.btn-warning.btn-sm.mr-2.mb-2(href=`/admin/role/edit`) Sửa
+                        button.btn.btn-danger.btn-sm.mb-2(type="button" data-name="product" button-delete) Xóa
+    //- +pagination(pagination)                    
+
+    form(action="" method="POST" id="form-change-status") 
+    form(action="" method="POST" id="form-delete")

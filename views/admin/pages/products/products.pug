@@ -48,11 +48,11 @@ block main
                 th Tên Sản Phẩm
                 th Danh mục
                 th Giá
+                th Giảm giá
                 th Số Lượng
                 th Vị trí
                 th Trạng thái
-                th Người tạo 
-                th Người cập nhật
+                th Cập nhật lần cuối
                 th Hành động
         tbody
             each product, index in products
@@ -63,8 +63,15 @@ block main
                     td 
                         img(src=product.thumbnail, alt="" style="width:100px")
                     td.title #{product.title}
-                    td Điện thoại
-                    td $#{product.price}
+                    if (product.categoryName === "empty")
+                        td Trống
+                    else 
+                        td #{product.categoryName} 
+                        
+                    td #{product.price} VNĐ
+                    -var price = product.price - product.price * (product.discountPercentage / 100)
+
+                    td #{price} VNĐ
                     td #{product.stock}
                     td #{product.position}
                     if (product.status == "active")
@@ -73,8 +80,8 @@ block main
                     else 
                         td 
                             button.btn.btn-secondary.btn-sm(type="button" data-id=product._id data-status="inactive") Không hoạt động
-                    td Người tạo: Admin 
-                    td Người cập nhật: Admin
+                     
+                    td Admin
                     td  
                         button.btn.btn-info.btn-sm.mr-2.mb-2(type="button") Chi tiết
                         a.btn.btn-warning.btn-sm.mr-2.mb-2(href=`/admin/products/edit/${product._id}`) Sửa

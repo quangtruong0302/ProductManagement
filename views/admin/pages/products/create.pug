@@ -20,8 +20,8 @@ block main
         .form-group 
             label(for="parent") Danh mục cha
               //- select(name="parent" id="parent inputGroupSelect02" class="custom-select")
-            select.form-control.mr-2(id="action-select" name="parent")
-                option(selected="selected" value="") Trống
+            select.form-control.mr-2(id="action-select" name="category")
+                option(selected="selected" value="empty") Trống
                 if (categories.length > 0) 
                     +select-tree(categories)
         .form-row.mb-3

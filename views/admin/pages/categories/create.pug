@@ -21,6 +21,7 @@ block main
                 option(selected="selected" value="empty") Trống
                 if (categories.length > 0) 
                     +select-tree(categories)
+              
         .form-group
           label(for="description") Mô Tả
           textarea#productDescription.form-control.textarea-mce(name="description" rows="3" placeholder="Nhập mô tả sản phẩm")

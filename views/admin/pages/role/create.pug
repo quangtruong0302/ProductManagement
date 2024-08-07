@@ -1,0 +1,19 @@
+extends ../../layouts/default.pug 
+include ../../mixins/alert.pug
+include ../../mixins/select-tree.pug
+block main 
+    -if(messages.success)
+        +alert-success(messages.success)
+    -if(messages.error)
+        +alert-error(messages.error)
+    .container.mt-5
+      h1 Thêm Mới Nhóm Quyền
+      form(action="/admin/role/create" method="POST")
+        .form-group
+          label(for="title") Tên Nhóm Quyền
+          input#productName.form-control(type="text" name="title" placeholder="Nhập tên nhóm quyền")
+        
+        .form-group
+          label(for="description") Mô Tả
+          textarea#productDescription.form-control.textarea-mce(name="description" rows="3" placeholder="Nhập mô tả nhóm quyền")
+        button.btn.btn-primary(type="submit") Thêm Nhóm Quyền

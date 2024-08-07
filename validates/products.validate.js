@@ -4,8 +4,8 @@ module.exports.createPost = (req, res, next) => {
     res.redirect("back");
     return;
   }
-  if (req.body.title.length < 5) {
-    req.flash("error", "Tên sản phẩm phải dài tối thiểu 5 kí tự");
+  if (req.body.title.length < 3) {
+    req.flash("error", "Tên sản phẩm phải dài tối thiểu 3 kí tự");
     res.redirect("back");
     return;
   }
