@@ -1,0 +1,40 @@
+extends ../../layouts/default.pug 
+include ../../mixins/alert.pug
+include ../../mixins/select-tree.pug
+
+block main 
+    -if(messages.success)
+        +alert-success(messages.success)
+    -if(messages.error)
+        +alert-error(messages.error)
+    
+    .container
+      h1 Chỉnh Sửa Tài Khoản
+      form(action=`/admin/accounts/edit/${account._id}?_method=PATCH` method="post" enctype="multipart/form-data")
+        .form-group
+          label(for="fullName") Họ và tên
+          input#fullName.form-control(type="text" name="fullName" value=account.fullName)
+          
+        .form-group
+          label(for="phone") Số điện thoại
+          input#phoneNumber.form-control(type="text" name="phone" value=account.phone)
+          
+        .form-group
+          label(for="email") Email
+          input#email.form-control(type="email" name="email" value=account.email)
+          
+        .form-group
+          label(for="password") Mật khẩu
+          input#password.form-control(type="password" name="password")
+        .form-group
+          label(for="role") Quyền
+          select#role.form-control(name="role")
+            each role in roles
+              option(value=role._id selected=role._id==account.role ? true : false) #{role.title}
+        .form-group.upload-image(upload-image)
+          label(for="avatar") Avatar 
+          input#avatar.form-control-file.input-image(type="file" aria-label="File input" name="avatar" accept="image/*")
+          .container-image-preview.mt-3
+            img.image-preview(src=account.avatar, alt="")
+            span.delete-image-preview &times;
+        button.btn.btn-primary(type="submit") Cập nhật

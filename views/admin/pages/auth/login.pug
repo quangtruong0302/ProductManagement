@@ -1,0 +1,79 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title Đăng Nhập
+    link(rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css")
+    link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css") 
+    style.
+        body {
+            background-color: #f8f9fa; /* Màu nền sáng */
+        }
+
+        .card {
+            border-radius: 10px; /* Bo góc card */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Đổ bóng card */
+        }
+
+        .card-body {
+            padding: 2rem; /* Padding bên trong card */
+        }
+
+        h3.card-title {
+            font-size: 1.5rem; /* Kích thước tiêu đề */
+            margin-bottom: 1.5rem; /* Khoảng cách dưới tiêu đề */
+        }
+
+        .form-control {
+            border-radius: 0.25rem; /* Bo góc trường nhập liệu */
+        }
+
+        .btn-primary {
+            border-radius: 0.25rem; /* Bo góc nút */
+            padding: 0.75rem 1.25rem; /* Padding nút */
+        }
+
+        .form-group {
+            position: relative; /* Để vị trí của icon */
+        }
+
+        .form-group i {
+            position: absolute;
+            top: 50%;
+            left: 15px;
+            transform: translateY(-50%);
+            color: #6c757d; /* Màu icon */
+        }
+
+        .form-control {
+            padding-left: 2.5rem; /* Tạo khoảng cách cho icon */
+        }
+        i {
+            margin-top: 16px
+        }
+
+  body
+    .d-flex.justify-content-center.align-items-center.min-vh-100
+        .container
+            .row.justify-content-center
+                .col-md-6
+                    .card.mt-5
+                        .card-body
+                            h3.card-title.text-center Đăng Nhập
+                            form(action="/admin/auth/login" method="post")
+                                .form-group
+                                    label(for="email") Email
+                                    i.fas.fa-envelope 
+                                    input.form-control(type="email" id="email" name="email" placeholder="Nhập email")
+                                .form-group
+                                    label(for="password") Mật khẩu
+                                    i.fas.fa-lock 
+                                    input.form-control(type="password" id="password" name="password" placeholder="Nhập mật khẩu")
+                                -if(messages.error)
+                                    .alert.alert-danger.mt-3 #{messages.error}
+                                button.btn.btn-primary.btn-block(type="submit") Đăng nhập
+ 
+    cript(src="https://code.jquery.com/jquery-3.5.1.slim.min.js")
+    script(src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js")
+    script(src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js")

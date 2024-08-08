@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const generateRandomSring = require("../helpers/generateString");
 const accountSchema = new mongoose.Schema(
   {
     fullName: String,
