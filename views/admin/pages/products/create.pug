@@ -2,6 +2,7 @@ extends ../../layouts/default.pug
 include ../../mixins/alert.pug
 include ../../mixins/select-tree.pug
 block main 
+  if (role_user.permissions.includes("create_product"))
     -if(messages.success)
         +alert-success(messages.success)
     -if(messages.error)
@@ -36,7 +37,7 @@ block main
           .col
             .form-group
               label(for="discountPercentage") Phần Trăm Giảm Giá
-              input#discountPercentage.form-control(type="number" step="0.01" name="discountPercentage" placeholder="Nhập phần trăm giảm giá")
+              input#discountPercentage.form-control(type="number" step="0.01" value="0" name="discountPercentage" placeholder="Nhập phần trăm giảm giá")
           .col
             .form-group
               label(for="position") Vị trí
@@ -59,3 +60,5 @@ block main
                 input#statusInactive.form-check-input(type="radio" name="status" value="inactive")
                 label.form-check-label(for="statusInactive")  Không hoạt động
         button.btn.btn-primary(type="submit") Thêm Sản Phẩm
+  else 
+    span Bạn không có quyền truy cập trang này

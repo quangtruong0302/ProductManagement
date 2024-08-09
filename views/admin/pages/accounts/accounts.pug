@@ -56,9 +56,12 @@ block main
                         td #{account.email}
                         td #{account.phone}
                         td  
-                            button.btn.btn-info.btn-sm.mr-2.mb-2(type="button") Chi tiết
-                            a.btn.btn-warning.btn-sm.mr-2.mb-2(href=`/admin/accounts/edit/${account._id}`) Sửa
-                            button.btn.btn-danger.btn-sm.mb-2(type="button" data-name="category" button-delete) Xóa
+                            if (role_user.permissions.includes("view_accounts"))
+                                button.btn.btn-info.btn-sm.mr-2.mb-2(type="button") Chi tiết
+                            if (role_user.permissions.includes("edit_accounts"))
+                                a.btn.btn-warning.btn-sm.mr-2.mb-2(href=`/admin/accounts/edit/${account._id}`) Sửa
+                            if (role_user.permissions.includes("delete_accounts"))
+                                button.btn.btn-danger.btn-sm.mb-2(type="button" data-name="category" button-delete) Xóa
         //- +pagination(pagination)                    
 
         form(action="" method="POST" id="form-change-status") 

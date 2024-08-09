@@ -2,6 +2,9 @@ const Product = require("../../models/products.model");
 const Categories = require("../../models/categories.model");
 const pagination = require("../../helpers/pagination");
 const search = require("../../helpers/search");
+const { accounts } = require("./accounts.controller");
+const Accounts = require("../../models/accounts.model");
+
 module.exports.products = async (req, res) => {
   const find = {
     deleted: false,
@@ -49,6 +52,15 @@ module.exports.products = async (req, res) => {
     } else {
       product.categoryName = categoryName;
     }
+
+    if (product.createdBy.account_id) {
+      const account = await Accounts.findOne({
+        _id: product.createdBy.account_id,
+      });
+      if (account) {
+        product.createdByName = account.fullName;
+      }
+    }
   }
   res.render("admin/pages/products/products.pug", {
     pageTitle: "Danh sách sản phẩm",
@@ -89,7 +101,9 @@ module.exports.createPost = async (req, res) => {
     req.body.price = parseFloat(req.body.price);
     req.body.discountPercentage = parseFloat(req.body.discountPercentage);
     req.body.stock = parseInt(req.body.stock);
-
+    req.body.createdBy = {
+      account_id: res.locals.user.id,
+    };
     if (!req.body.position) {
       const countProduct = await Product.countDocuments();
       req.body.position = countProduct + 1;
@@ -100,7 +114,10 @@ module.exports.createPost = async (req, res) => {
     await product.save();
     req.flash("success", "Thêm sản phẩm thành công");
     res.redirect("/admin/products");
-  } catch (error) {}
+  } catch (error) {
+    req.flash("error", "Đã xảy ra lỗi, vui lòng thử lại");
+    res.redirect("/admin/products");
+  }
 };
 
 module.exports.changeStatus = async (req, res) => {
@@ -119,7 +136,14 @@ module.exports.changeStatus = async (req, res) => {
 
 module.exports.delete = async (req, res) => {
   try {
-    await Product.updateOne({ _id: req.params.id }, { deleted: true });
+    const deletedBy = {
+      account_id: res.locals.user.id,
+      deletedAt: Date.now(),
+    };
+    await Product.updateOne(
+      { _id: req.params.id },
+      { deleted: true, deletedBy: deletedBy }
+    );
     req.flash("success", "Sản phẩm đã được chuyển vào thùng rác!");
     res.redirect("back");
   } catch (error) {
@@ -154,6 +178,33 @@ module.exports.trash = async (req, res) => {
     .sort({ position: "desc" })
     .limit(objPagination.limitItems)
     .skip(objPagination.skip);
+  for (const product of products) {
+    let categoryName = "empty";
+    if (product.category != "empty") {
+      const category = await Categories.findOne({
+        _id: product.category,
+        deleted: false,
+      });
+      if (category) {
+        categoryName = category.title;
+      } else {
+        categoryName = "empty";
+      }
+      product.categoryName = categoryName;
+    } else {
+      product.categoryName = categoryName;
+    }
+
+    if (product.deletedBy.account_id) {
+      const account = await Accounts.findOne({
+        _id: product.deletedBy.account_id,
+      });
+      if (account) {
+        product.deletedByName = account.fullName;
+      }
+    }
+  }
+
   res.render("admin/pages/products/trash.pug", {
     pageTitle: "Thùng rác",
     products: products,

@@ -45,7 +45,6 @@ block main
                     th Tên Sản Phẩm
                     th Danh mục
                     th Giá
-                    th Giảm giá
                     th Số Lượng
                     th Vị trí
                     th Trạng thái
@@ -64,11 +63,13 @@ block main
                             td Trống
                         else 
                             td #{product.categoryName} 
-                            
-                        td #{product.price} VNĐ
                         -var price = product.price - product.price * (product.discountPercentage / 100)
-
-                        td #{price} VNĐ
+                        td 
+                            span.price #{product.price} VNĐ
+                            br
+                            span.text-danger -#{product.discountPercentage}%
+                            br
+                            span.font-weight-bold #{price} VNĐ
                         td #{product.stock}
                         td #{product.position}
                         if (product.status == "active")
@@ -78,11 +79,20 @@ block main
                             td 
                                 button.btn.btn-secondary.btn-sm(type="button" data-id=product._id data-status="inactive") Không hoạt động
                         
-                        td Admin
-                        td  
-                            button.btn.btn-info.btn-sm.mr-2.mb-2(type="button") Chi tiết
-                            a.btn.btn-warning.btn-sm.mr-2.mb-2(href=`/admin/products/edit/${product._id}`) Sửa
-                            button.btn.btn-danger.btn-sm.mb-2(type="button" data-id=product._id data-name="product" button-delete) Xóa
+                        if (product.createdBy.account_id)
+                            td 
+                                span #{product.createdByName}
+                                br
+                                span #{moment(product.createdBy.createdAt).format("HH:mm:ss -- DD/MM/YYYY ")}
+                        else 
+                            td Chưa cập nhật
+                        td     
+                            if (role_user.permissions.includes("view_product"))
+                                button.btn.btn-info.btn-sm.mr-2.mb-2(type="button") Chi tiết
+                            if (role_user.permissions.includes("edit_product"))
+                                a.btn.btn-warning.btn-sm.mr-2.mb-2(href=`/admin/products/edit/${product._id}`) Sửa
+                            if (role_user.permissions.includes("delete_product"))
+                                button.btn.btn-danger.btn-sm.mb-2(type="button" data-id=product._id data-name="product" button-delete) Xóa
         +pagination(pagination)                    
 
         form(action="" method="POST" id="form-change-status") 

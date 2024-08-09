@@ -3,6 +3,7 @@ include ../../mixins/alert.pug
 include ../../mixins/select-tree.pug
 
 block main 
+  if (role_user.permissions.includes("edit_accounts"))
     -if(messages.success)
         +alert-success(messages.success)
     -if(messages.error)
@@ -38,3 +39,5 @@ block main
             img.image-preview(src=account.avatar, alt="")
             span.delete-image-preview &times;
         button.btn.btn-primary(type="submit") Cập nhật
+  else 
+    span Bạn không có quyền truy cập trang này

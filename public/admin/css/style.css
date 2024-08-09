@@ -217,4 +217,8 @@ span.delete-image-preview {
 
 td.desc {
   max-width: 200px;
+}
+
+span.price {
+  text-decoration: line-through;
 }/*# sourceMappingURL=style.css.map */

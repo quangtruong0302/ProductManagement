@@ -54,9 +54,12 @@ block main
                         td.title #{role.title}
                         td !{role.description}
                         td  
-                            button.btn.btn-info.btn-sm.mr-2.mb-2(type="button") Chi tiết
-                            a.btn.btn-warning.btn-sm.mr-2.mb-2(href=`/admin/role/edit`) Sửa
-                            button.btn.btn-danger.btn-sm.mb-2(type="button" data-name="product" button-delete) Xóa
+                            if (role_user.permissions.includes("view_roles"))
+                                button.btn.btn-info.btn-sm.mr-2.mb-2(type="button") Chi tiết
+                            if (role_user.permissions.includes("edit_roles"))
+                                a.btn.btn-warning.btn-sm.mr-2.mb-2(href=`/admin/role/edit`) Sửa
+                            if (role_user.permissions.includes("delete_roles"))
+                                button.btn.btn-danger.btn-sm.mb-2(type="button" data-name="product" button-delete) Xóa
         //- +pagination(pagination)                    
 
         form(action="" method="POST" id="form-change-status") 

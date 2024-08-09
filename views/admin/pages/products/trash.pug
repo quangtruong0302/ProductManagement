@@ -6,66 +6,77 @@ include ../../mixins/alert.pug
 
 
 block main
-    -if(messages.success)
-        +alert-success(messages.success)
-    -if(messages.error)
-        +alert-error(messages.error)
-        
-    h1.mb-5 Danh Sách Sản Phẩm
-    .row.mb-4
-        .col-md-12
-          .form-inline
-            // Phần tìm kiếm
-            +search()
+    if (role_user.permissions.includes("delete_product"))
+        -if(messages.success)
+            +alert-success(messages.success)
+        -if(messages.error)
+            +alert-error(messages.error)
             
-            // Phần chọn lựa và nút áp dụng
-            +changeMulti-trash()
-            .create-contrainer
-                a.btn.btn-primary(href="/admin/products/create")
-                    i.bi.bi-plus.mr-2
-                    | Thêm mới sản phẩm
-    .mb-3
-        .d-flex.justify-content-flex-start
-            a.btn.btn-primary.mr-2(href='trash?status=all') Tất cả 
-            a.btn.btn-success.mr-2(href='trash?status=active') Hoạt động
-            a.btn.btn-secondary(href='trash?status=inactive') Không hoạt động
-        
-    table.table.table-striped(checkbox-multi)
-        thead
-            tr
-                th 
-                    input(type="checkbox", name="check-all")
-                th STT
-                th Hình ảnh
-                th Tên Sản Phẩm
-                th Giá
-                th Số Lượng
-                th Vị trí
-                th Trạng thái
-                th Nguời xoá
-                th Hành động
-        tbody
-            each product, index in products
+        h1.mb-5 Danh Sách Sản Phẩm
+        .row.mb-4
+            .col-md-12
+                .form-inline          
+                    +search()
+                    +changeMulti-trash()
+                    .create-contrainer
+                        a.btn.btn-primary(href="/admin/products/create")
+                            i.bi.bi-plus.mr-2
+                            | Thêm mới sản phẩm
+        .mb-3
+            .d-flex.justify-content-flex-start
+                a.btn.btn-primary.mr-2(href='trash?status=all') Tất cả 
+                a.btn.btn-success.mr-2(href='trash?status=active') Hoạt động
+                a.btn.btn-secondary(href='trash?status=inactive') Không hoạt động
+            
+        table.table.table-striped(checkbox-multi)
+            thead
                 tr
-                    td
-                        input(type="checkbox" name="id" value=product._id)
-                    td #{index + 1}
-                    td 
-                        img(src=product.thumbnail, alt="" style="width:100px")
-                    td.title #{product.title}
-                    td $#{product.price}
-                    td #{product.stock}
-                    td #{product.position}
-                    if (product.status == "active")
+                    th 
+                        input(type="checkbox", name="check-all")
+                    th STT
+                    th Hình ảnh
+                    th Tên Sản Phẩm
+                    th Danh mục
+                    th Giá
+                    th Số Lượng
+                    th Vị trí
+                    th Trạng thái
+                    th Người xoá
+                    th Hành động
+            tbody
+                each product, index in products
+                    tr
                         td
-                            button.btn.btn-success.btn-sm.btn-spacing(type="button") Hoạt động
-                    else 
+                            input(type="checkbox" name="id" value=product._id)
+                        td #{index + 1}
                         td 
-                            button.btn.btn-secondary.btn-sm(type="button") Không hoạt động
-                    td Người xoá: Admin
-                    td  
-                        button.btn.btn-success.btn-sm.mr-2(type="button" data-id=product._id button-restore) Khôi phục
-                        button.btn.btn-danger.btn-sm(type="button" data-id=product._id permanent-Delete) Xóa vĩnh viễn
-    +pagination(pagination)                    
-    form(action="" method="POST" id="form-restore")
-    form(action="" method="POST" id="form-permanent-delete")
+                            img(src=product.thumbnail, alt="" style="width:100px")
+                        td.title #{product.title}
+                        if (product.categoryName === "empty")
+                            td Trống
+                        else 
+                            td #{product.categoryName} 
+                        td $#{product.price}
+                        td #{product.stock}
+                        td #{product.position}
+                        if (product.status == "active")
+                            td
+                                button.btn.btn-success.btn-sm.btn-spacing(type="button") Hoạt động
+                        else 
+                            td 
+                                button.btn.btn-secondary.btn-sm(type="button") Không hoạt động
+                        if (product.deletedBy.account_id)
+                            td 
+                                span #{product.deletedByName}
+                                br
+                                span #{moment(product.deletedBy.deletedAt).format("HH:mm:ss -- DD/MM/YYYY ")}
+                        else 
+                            td Chưa cập nhật
+                        td  
+                            button.btn.btn-success.btn-sm.mr-2(type="button" data-id=product._id button-restore) Khôi phục
+                            button.btn.btn-danger.btn-sm(type="button" data-id=product._id permanent-Delete) Xóa vĩnh viễn
+        +pagination(pagination)                    
+        form(action="" method="POST" id="form-restore")
+        form(action="" method="POST" id="form-permanent-delete")
+    else 
+        span Bạn không có quyền truy cập trang này

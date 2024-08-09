@@ -24,6 +24,9 @@ app.use(cookieParser("quangtruong1703"));
 app.use(session({ cookie: { maxAge: 60000 } }));
 app.use(flash());
 
+const moment = require("moment");
+app.locals.moment = moment;
+
 app.use(
   "/tinymce",
   express.static(path.join(__dirname, "node_modules", "tinymce"))

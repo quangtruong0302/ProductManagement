@@ -2,6 +2,7 @@ extends ../../layouts/default.pug
 include ../../mixins/alert.pug
 include ../../mixins/select-tree.pug
 block main 
+  if (role_user.permissions.includes("edit_product"))
     -if(messages.success)
         +alert-success(messages.success)
     -if(messages.error)
@@ -59,3 +60,5 @@ block main
                 input#statusInactive.form-check-input(type="radio" name="status" value="inactive" checked=product.status=="inactive" ? true : false)
                 label.form-check-label(for="statusInactive")  Không hoạt động
         button.btn.btn-primary(type="submit") Cập nhật
+  else 
+    span Bạn không có quyền truy cập trang này
