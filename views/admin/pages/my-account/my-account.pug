@@ -1,0 +1,27 @@
+extends ../../layouts/default.pug 
+
+
+block main 
+    .container
+      h1.mb-4 Thông tin cá nhân
+      .row
+        .col-4
+          img.avatar(src=user.avatar, alt="Avatar" style="width:200px")
+          .mt-2
+            a.btn.btn-primary(href="/admin/my-account/edit") Chỉnh sửa thông tin
+        .col-8
+          table.table.table-bordered
+            tbody
+              tr
+                th Họ và tên
+                td #{user.fullName}
+              tr
+                th Email
+                td #{user.email}
+              tr
+                th Số điện thoại
+                td #{user.phone}
+              tr
+                th Quyền
+                td #{role_user.title}
+    

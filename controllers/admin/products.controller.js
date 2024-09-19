@@ -239,7 +239,14 @@ module.exports.changeMulti = async (req, res) => {
   try {
     switch (typeChange) {
       case "delete_all":
-        await Product.updateMany({ _id: { $in: ids } }, { deleted: true });
+        const deletedBy = {
+          account_id: res.locals.user.id,
+          deletedAt: Date.now(),
+        };
+        await Product.updateMany(
+          { _id: { $in: ids } },
+          { deleted: true, deletedBy: deletedBy }
+        );
         req.flash("success", "Các sản phẩm đã được chuyển vào thùng rác");
         break;
       case "active_all":

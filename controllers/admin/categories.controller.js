@@ -117,9 +117,7 @@ module.exports.editPatch = async (req, res) => {
 module.exports.delete = async (req, res) => {
   try {
     const id = req.params.id;
-    console.log(id);
     const isParent = await Categories.exists({ parent: id, deleted: false });
-    console.log(isParent);
     if (isParent) {
       req.flash(
         "error",

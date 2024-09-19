@@ -1,5 +1,8 @@
 const Product = require("../../models/products.model");
+const Categories = require("../../models/categories.model");
 const pagination = require("../../helpers/pagination");
+const flash = require("express-flash");
+const { products } = require("../admin/products.controller");
 
 module.exports.home = async (req, res) => {
   const find = {
@@ -24,5 +27,18 @@ module.exports.home = async (req, res) => {
     pageTitle: "Danh sách sản phẩm",
     products: products,
     pagination: objPagination,
+  });
+};
+
+module.exports.category = async (req, res) => {
+  const category = await Categories.findOne({
+    slug: req.params.slug,
+    deleted: false,
+  });
+  const products = await Product.find({ category: category._id });
+  console.log(products);
+  res.render("client/pages/products/category.pug", {
+    pageTitle: "Thể loại",
+    products: products,
   });
 };
