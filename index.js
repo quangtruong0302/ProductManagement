@@ -13,8 +13,8 @@ const bodyParser = require("body-parser");
 app.use(methodOverride("_method"));
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.set("views", `${__dirname}/views`);
 app.set("views engine", "pug");
+app.set("views", `${__dirname}/views`);
 app.use(express.static(`${__dirname}/public`));
 
 const flash = require("express-flash");
