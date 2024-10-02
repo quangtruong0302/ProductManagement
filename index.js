@@ -33,6 +33,6 @@ app.use(
 );
 
 Router(app);
-app.listen(PORT, () => {
+app.listen(3000, () => {
   console.log(`http://localhost:${PORT}`);
 });
